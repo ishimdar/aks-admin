@@ -1,11 +1,19 @@
+const cloudinary = require('../config/cloudinary');
 const ProductSchema = require("../models/Product");
 
 const createProduct = (async (req, res) => {
     
     try {
-        const product = new ProductSchema(req.body);
+        const result = await cloudinary.uploader.upload(req.file.path, {
+            folder: "products"
+        });
+
+        const product = new ProductSchema({
+            ...req.body,
+            imageUrl: result.secure_url
+        });
         await product.save();
-        res.status(200).json({
+        res.status(201).json({
             data: product,
             msg: "Record Created Succesfully"
         })
