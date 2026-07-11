@@ -5,14 +5,18 @@ const MONGO_URI = process.env.MONGO_URI;
 const connectDb = async () => {
     try {
         console.log('MONGO_URI---', MONGO_URI);
-        await mongoose.connect(MONGO_URI);
-
-        // await mongoose.connect(MONGO_URI, {
+        // await mongoose.connect(MONGO_URI);
+        // await mongoose.connect(process.env.MONGO_URI, {
         //     useNewUrlParser: true,
-        //     useUnifiedTopology: true,
-        //     ssl: true,
-        //     sslValidate: false
+        //     useUnifiedTopology: true
         // });
+
+        await mongoose.connect(MONGO_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            ssl: true,
+            sslValidate: false
+        });
         console.log("✅ MongoDB Connected");
     } catch (err) {
         console.error("❌ Connection error:", err);

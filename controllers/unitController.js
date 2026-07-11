@@ -14,4 +14,4 @@ const getUnits = (req, res) => {
   res.status(200).json(units);
 };
 
-module.exports = { getUnits };
+module.exports = { getUnits, units };

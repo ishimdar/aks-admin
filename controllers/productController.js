@@ -1,5 +1,8 @@
 const cloudinary = require('../config/cloudinary');
 const ProductSchema = require("../models/Product");
+const Product = require("../models/Product");
+const { categories } = require("./categoryController");
+const { units } = require("./unitController");
 
 const createProduct = (async (req, res) => {
     
@@ -8,10 +11,21 @@ const createProduct = (async (req, res) => {
             folder: "products"
         });
 
+        const { category, unit } = req.body;
+        const categoryObj = categories.find(c => c.shortName === category);
+        const unitObj = units.find(u => u.shortName === unit);
+
+        if (!categoryObj || !unitObj) {
+            return res.status(400).json({ error: "Invalid category or unit short name" });
+        }
+
         const product = new ProductSchema({
             ...req.body,
+            category: categoryObj.name,
+            unit: unitObj.name,
             imageUrl: result.secure_url
         });
+
         await product.save();
         res.status(201).json({
             data: product,
