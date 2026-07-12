@@ -47,6 +47,7 @@ const productSchema = new mongoose.Schema({
       message: props => `${props.value} is not a valid image URL`
     }
   },
+  imagePublicId: String,
   createdAt: {
     type: Date,
     default: Date.now
